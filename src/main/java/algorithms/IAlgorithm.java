@@ -1,5 +1,9 @@
 package algorithms;
 
+import models.Node;
+
+import java.util.List;
+
 public interface IAlgorithm {
-    void solve(int[][] startingState, int[][] goalState);
+    List<Node> solve(Node startingNode, int[][] goalState);
 }

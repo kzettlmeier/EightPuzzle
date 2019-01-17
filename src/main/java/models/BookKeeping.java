@@ -1,19 +1,19 @@
 package models;
 
 public class BookKeeping {
-    private String action;
+    private Action action;
     private int depth;
     private int pathCost;
     private boolean expanded;
 
-    public BookKeeping(String action, int depth, int pathCost, boolean expanded) {
+    public BookKeeping(Action action, int depth, int pathCost, boolean expanded) {
         this.action = action;
         this.depth = depth;
         this.pathCost = pathCost;
         this.expanded = expanded;
     }
 
-    public String getAction() {
+    public Action getAction() {
         return this.action;
     }
 
@@ -29,7 +29,7 @@ public class BookKeeping {
         return this.expanded;
     }
 
-    public void setAction(String action) {
+    public void setAction(Action action) {
         this.action = action;
     }
 

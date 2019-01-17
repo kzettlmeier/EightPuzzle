@@ -1,6 +1,12 @@
 package main;
 
 import algorithms.*;
+import models.Action;
+import models.BookKeeping;
+import models.Node;
+
+import java.awt.print.Book;
+import java.util.List;
 
 public class Main {
     private static final int[][] startingStateEasy = {
@@ -39,11 +45,31 @@ public class Main {
         System.out.println("Running Eight Puzzle on " + difficulty + " with algorithm " + algorithm + "!");
 
         setStartingStateBasedOnDifficulty();
+
+        Node startingNode = new Node(state, null, null, new BookKeeping(Action.NONE, 0, 0, false));
+
         System.out.println("Starting state:");
-        printOutStateInGrid(state);
+        startingNode.printOutStateInAGrid();
+        System.out.println("---------------------");
 
         setAlgorithm();
-        algorithmSolver.solve(state, goalState);
+        List<Node> solution = algorithmSolver.solve(startingNode, goalState);
+
+        System.out.println("Found a solution:");
+        printOutList(solution);
+    }
+
+    private static void printOutList(List<Node> list) {
+        if (list != null) {
+            int totalCost = 0;
+            for (Node node : list) {
+                BookKeeping bk = node.getBookKeeping();
+                totalCost += bk.getPathCost();
+                System.out.println(bk.getAction().toString() + ", cost = " + bk.getPathCost() + ", total cost = " + totalCost);
+                node.printOutStateInAGrid();
+                System.out.println("---------------------");
+            }
+        }
     }
 
     private static void setAlgorithm() {
@@ -110,19 +136,5 @@ public class Main {
         }
 
         return true;
-    }
-
-    private static void printOutStateInGrid(int[][] state) {
-        for (int i = 0; i < state.length; i++) {
-            String row = "[";
-            for (int j = 0; j < state[i].length; j++) {
-                row += state[i][j];
-                if (j < state[i].length - 1) {
-                    row += "|";
-                }
-            }
-            row += "]";
-            System.out.println(row);
-        }
     }
 }
