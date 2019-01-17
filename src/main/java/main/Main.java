@@ -6,6 +6,7 @@ import models.BookKeeping;
 import models.Node;
 
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 public class Main {
     private static final int[][] startingStateEasy = {
@@ -52,10 +53,13 @@ public class Main {
         System.out.println("---------------------");
 
         setAlgorithm();
-        List<Node> solution = algorithmSolver.solve(startingNode, goalState);
-
-        System.out.println("Found a solution:");
-        printOutList(solution);
+        try {
+            List<Node> solution = algorithmSolver.solve(startingNode, goalState, 20000);
+            System.out.println("Found a solution:");
+            printOutList(solution);
+        } catch (TimeoutException ex) {
+            System.out.println("Algorithm Exception: " + ex.getMessage());
+        }
     }
 
     private static void printOutList(List<Node> list) {
