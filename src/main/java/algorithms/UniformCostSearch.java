@@ -8,7 +8,7 @@ import java.util.concurrent.TimeoutException;
 
 public class UniformCostSearch implements IAlgorithm {
     public List<Node> solve(Node startingNode, int[][] goalState, Date startingTime) throws TimeoutException {
-        PriorityQueue<Node> queue = new PriorityQueue<>(Constants.MAX_POSSIBLE_STATES, (x, y) -> y.getBookKeeping().getPathCost() - x.getBookKeeping().getPathCost());
+        PriorityQueue<Node> queue = new PriorityQueue<>(Constants.MAX_POSSIBLE_STATES, Comparator.comparingInt(x -> x.getBookKeeping().getPathCost()));
         List<Node> visitedNodes = new ArrayList<>();
 
         queue.add(startingNode);
