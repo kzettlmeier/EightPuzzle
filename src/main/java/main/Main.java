@@ -1,6 +1,7 @@
 package main;
 
 import algorithms.*;
+import helpers.Constants;
 import models.Action;
 import models.BookKeeping;
 import models.Node;
@@ -59,8 +60,13 @@ public class Main {
             List<Node> solution = algorithmSolver.solve(startingNode, goalState, startingTime);
             System.out.println("Found a solution:");
             printOutList(solution);
+            long timeToSolveInMs = (new Date()).getTime() - startingTime.getTime();
+            long timeToSolveMin = (timeToSolveInMs / 1000) / 60;
+            int timeToSolveSec = (int)((timeToSolveInMs / 1000) % 60);
+            System.out.println("Time to Solve: " + timeToSolveMin + " minutes and " + timeToSolveSec + " seconds.");
         } catch (TimeoutException ex) {
             System.out.println("Algorithm Exception: " + ex.getMessage());
+            System.out.println("Algorithm took longer than " + (Constants.MAX_TIME_TO_SOLVE / 1000) / 60 + " minutes.");
         }
     }
 

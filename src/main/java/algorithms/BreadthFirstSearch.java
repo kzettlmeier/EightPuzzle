@@ -16,7 +16,7 @@ public class BreadthFirstSearch implements IAlgorithm {
 
         while (!queue.isEmpty()) {
             if ((new Date()).getTime() - startingTime.getTime() >= Constants.MAX_TIME_TO_SOLVE) {
-                throw new TimeoutException("Algorithm exceeded max number of iterations");
+                throw new TimeoutException("Algorithm exceeded time");
             }
             // Dequeue
             Node node = queue.poll();
