@@ -20,11 +20,16 @@ public class AStarOneSearch implements IAlgorithm {
             }
             // Dequeue
             Node node = queue.poll();
+            if (node.getParentNode() != null) {
+                node.getBookKeeping().setTotalCost(node.getParentNode().getBookKeeping().getTotalCost() + node.getBookKeeping().getPathCost());
+            } else {
+                node.getBookKeeping().setTotalCost(node.getBookKeeping().getPathCost());
+            }
 
             // Mark node as visited
             node.getBookKeeping().setExpanded(true);
             visitedNodes.add(node);
-            // Check if starting state equals goalState
+            // Check if node equals goalState
             if (node.checkIfStatesAreEqual(goalState)) {
                 return node.getRouteToCurrentNode();
             }
@@ -41,7 +46,7 @@ public class AStarOneSearch implements IAlgorithm {
     }
 
     private int evaluate(Node node, int[][] goalState) {
-        return node.getBookKeeping().getPathCost() + numberOfTilesNotInCorrectPosition(node.getState(), goalState);
+        return node.getBookKeeping().getTotalCost() + numberOfTilesNotInCorrectPosition(node.getState(), goalState);
     }
 
     private int numberOfTilesNotInCorrectPosition(int [][] currentState, int[][] goalState) {

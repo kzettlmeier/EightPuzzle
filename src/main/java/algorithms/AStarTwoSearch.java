@@ -20,11 +20,16 @@ public class AStarTwoSearch implements IAlgorithm {
             }
             // Dequeue
             Node node = queue.poll();
+            if (node.getParentNode() != null) {
+                node.getBookKeeping().setTotalCost(node.getParentNode().getBookKeeping().getTotalCost() + node.getBookKeeping().getPathCost());
+            } else {
+                node.getBookKeeping().setTotalCost(node.getBookKeeping().getPathCost());
+            }
 
             // Mark node as visited
             node.getBookKeeping().setExpanded(true);
             visitedNodes.add(node);
-            // Check if starting state equals goalState
+            // Check if node equals goalState
             if (node.checkIfStatesAreEqual(goalState)) {
                 return node.getRouteToCurrentNode();
             }
@@ -41,7 +46,7 @@ public class AStarTwoSearch implements IAlgorithm {
     }
 
     private int evaluate(Node node, int[][] goalState) {
-        return node.getBookKeeping().getPathCost() + sumOfManhattanDistanceForState(node.getState(), goalState);
+        return node.getBookKeeping().getTotalCost() + sumOfManhattanDistanceForState(node.getState(), goalState);
     }
 
     private int sumOfManhattanDistanceForState(int [][] currentState, int[][] goalState) {
@@ -51,7 +56,9 @@ public class AStarTwoSearch implements IAlgorithm {
                 if (currentState[i][j] != goalState[i][j]) {
                     for (int m = 0; m < goalState.length; m++) {
                         for (int n = 0; n < goalState[m].length; n++) {
-                            num += Math.abs(i - m) + Math.abs(j - n);
+                            if (currentState[i][j] == goalState[m][n]) {
+                                num += Math.abs(i - m) + Math.abs(j - n);
+                            }
                         }
                     }
                 }

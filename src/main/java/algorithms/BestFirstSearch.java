@@ -24,7 +24,7 @@ public class BestFirstSearch implements IAlgorithm {
             // Mark node as visited
             node.getBookKeeping().setExpanded(true);
             visitedNodes.add(node);
-            // Check if starting state equals goalState
+            // Check if node equals goalState
             if (node.checkIfStatesAreEqual(goalState)) {
                 return node.getRouteToCurrentNode();
             }
