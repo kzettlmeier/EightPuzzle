@@ -5,6 +5,7 @@ import models.Action;
 import models.BookKeeping;
 import models.Node;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -54,7 +55,8 @@ public class Main {
 
         setAlgorithm();
         try {
-            List<Node> solution = algorithmSolver.solve(startingNode, goalState, 20000);
+            Date startingTime = new Date();
+            List<Node> solution = algorithmSolver.solve(startingNode, goalState, startingTime);
             System.out.println("Found a solution:");
             printOutList(solution);
         } catch (TimeoutException ex) {

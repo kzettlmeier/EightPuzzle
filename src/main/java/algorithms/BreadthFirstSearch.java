@@ -1,20 +1,21 @@
 package algorithms;
 
+import helpers.Constants;
 import models.Node;
 
+import java.util.Date;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
 
 public class BreadthFirstSearch implements IAlgorithm {
-    public List<Node> solve(Node startingNode, int[][] goalState, int maxIterations) throws TimeoutException {
-        Queue<Node> queue = new LinkedList<>();
+    public List<Node> solve(Node startingNode, int[][] goalState, Date startingTime) throws TimeoutException {
+        LinkedList<Node> queue = new LinkedList<>();
         List<Node> visitedNodes = new ArrayList<>();
 
         queue.add(startingNode);
 
-        int iterations = 0;
         while (!queue.isEmpty()) {
-            if (iterations++ > maxIterations) {
+            if ((new Date()).getTime() - startingTime.getTime() >= Constants.MAX_TIME_TO_SOLVE) {
                 throw new TimeoutException("Algorithm exceeded max number of iterations");
             }
             // Dequeue

@@ -1,38 +1,44 @@
 package algorithms;
 
+import helpers.Constants;
 import models.Node;
 
+import java.util.Date;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public class DepthFirstSearch implements IAlgorithm {
-    private Node goalNode;
-    private int iterations = 0;
-    public List<Node> solve(Node startingNode, int[][] goalState, int maxIterations) throws TimeoutException {
+    public List<Node> solve(Node startingNode, int[][] goalState, Date startingTime) throws TimeoutException {
+        LinkedList<Node> queue = new LinkedList<>();
         List<Node> visitedNodes = new ArrayList<>();
-        this.dfs(startingNode, visitedNodes, goalState, maxIterations);
-        return goalNode.getRouteToCurrentNode();
-    }
 
-    private void dfs(Node node, List<Node> visitedNodes, int[][] goalState, int maxIterations) throws TimeoutException {
-        if (iterations++ > maxIterations) {
-            throw new TimeoutException("Algorithm exceeded max number of iterations");
-        }
-        // Mark node as visited
-        node.getBookKeeping().setExpanded(true);
-        visitedNodes.add(node);
-        // Check if starting state equals goalState
-        if (node.checkIfStatesAreEqual(goalState)) {
-            this.goalNode = node;
-        }
+        queue.add(startingNode);
 
-        System.out.println(node.getBookKeeping().getDepth());
-        List<Node> children = node.getSuccessors(node.getBookKeeping().getAction());
-        for (Node child : children) {
-            if (!child.getBookKeeping().isExpanded() && !visitedNodes.contains(child)) {
-                this.dfs(child, visitedNodes, goalState, maxIterations);
+        while (!queue.isEmpty()) {
+            if ((new Date()).getTime() - startingTime.getTime() >= Constants.MAX_TIME_TO_SOLVE) {
+                throw new TimeoutException("Algorithm exceeded max number of iterations");
+            }
+            // Dequeue
+            Node node = queue.pollLast();
+
+            // Mark node as visited
+            node.getBookKeeping().setExpanded(true);
+            visitedNodes.add(node);
+            // Check if starting state equals goalState
+            if (node.checkIfStatesAreEqual(goalState)) {
+                return node.getRouteToCurrentNode();
+            }
+
+            List<Node> children = node.getSuccessors(node.getBookKeeping().getAction());
+            for (Node child : children) {
+                if (!child.getBookKeeping().isExpanded() && !visitedNodes.contains(child)) {
+                    queue.add(child);
+                }
             }
         }
+
+        return null;
     }
 }
