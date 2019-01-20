@@ -5,6 +5,7 @@ import helpers.Constants;
 import models.Action;
 import models.BookKeeping;
 import models.Node;
+import models.Solution;
 
 import java.util.Date;
 import java.util.List;
@@ -57,13 +58,17 @@ public class Main {
         setAlgorithm();
         try {
             Date startingTime = new Date();
-            List<Node> solution = algorithmSolver.solve(startingNode, goalState, startingTime);
+            Solution solution = algorithmSolver.solve(startingNode, goalState, startingTime);
             System.out.println("Found a solution:");
-            printOutList(solution);
+            printOutList(solution.getSolutionList());
             long timeToSolveInMs = (new Date()).getTime() - startingTime.getTime();
             long timeToSolveMin = (timeToSolveInMs / 1000) / 60;
             int timeToSolveSec = (int)((timeToSolveInMs / 1000) % 60);
             System.out.println("Time to Solve: " + timeToSolveMin + " minutes and " + timeToSolveSec + " seconds.");
+            System.out.println("Length of solution path: " + solution.getSolutionList().size());
+            System.out.println("Cost of solution path: " + solution.getTotalCost());
+            System.out.println("Time: " + solution.getNumberOfNodesPopped());
+            System.out.println("Space: " + solution.getTotalSpaceAtMax());
         } catch (TimeoutException ex) {
             System.out.println("Algorithm Exception: " + ex.getMessage());
             System.out.println("Algorithm took longer than " + (Constants.MAX_TIME_TO_SOLVE / 1000) / 60 + " minutes.");
