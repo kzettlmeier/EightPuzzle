@@ -94,7 +94,7 @@ public class AStarThreeSearch implements IAlgorithm {
                     for (int m = 0; m < goalState.length; m++) {
                         for (int n = 0; n < goalState[m].length; n++) {
                             if (currentState[i][j] == goalState[m][n]) {
-                                firstHalfNum += Math.abs(i - m) + Math.abs(j - n);
+                                firstHalfNum += (Math.abs(i - m) + Math.abs(j - n)) * currentState[i][j];
                             }
                         }
                     }
@@ -102,7 +102,7 @@ public class AStarThreeSearch implements IAlgorithm {
                     for (int m = 0; m < goalState.length; m++) {
                         for (int n = 0; n < goalState[m].length; n++) {
                             if (currentState[i][j] == goalState[m][n]) {
-                                secondHalfNum += Math.abs(i - m) + Math.abs(j - n);
+                                secondHalfNum += (Math.abs(i - m) + Math.abs(j - n)) * currentState[i][j];
                             }
                         }
                     }
