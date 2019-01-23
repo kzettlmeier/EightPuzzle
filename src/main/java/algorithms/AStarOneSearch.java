@@ -24,14 +24,8 @@ public class AStarOneSearch implements IAlgorithm {
             // Dequeue
             Node node = queue.poll();
             nodesPopped++;
-            if (node.getParentNode() != null) {
-                node.getBookKeeping().setTotalCost(node.getParentNode().getBookKeeping().getTotalCost() + node.getBookKeeping().getPathCost());
-            } else {
-                node.getBookKeeping().setTotalCost(node.getBookKeeping().getPathCost());
-            }
 
             // Mark node as visited
-            node.getBookKeeping().setExpanded(true);
             visitedNodes.add(node);
             // Check if node equals goalState
             if (node.checkIfStatesAreEqual(goalState)) {
@@ -40,7 +34,41 @@ public class AStarOneSearch implements IAlgorithm {
 
             List<Node> children = node.getSuccessors(node.getBookKeeping().getAction());
             for (Node child : children) {
-                if (!child.getBookKeeping().isExpanded() && !queue.contains(child) && !visitedNodes.contains(child)) {
+                child.getBookKeeping().setTotalCost(node.getBookKeeping().getTotalCost() + child.getBookKeeping().getPathCost());
+                boolean shouldAdd = true;
+                if (visitedNodes.contains(child)) {
+                    // Visited node contains state, need to check if this is currently a better implementation of that visited node otherwise ignore
+                    Object[] nodes = visitedNodes.toArray();
+                    for (Object nodeObj : nodes) {
+                        Node searchNode = (Node)nodeObj;
+                        if (searchNode.equals(child)) {
+                            int prevNodeEval = evaluate(searchNode, goalState) + searchNode.getBookKeeping().getTotalCost();
+                            int newNodeEval = evaluate(child, goalState) + child.getBookKeeping().getTotalCost();
+                            if (newNodeEval < prevNodeEval) {
+                                visitedNodes.remove(searchNode);
+                            } else {
+                                shouldAdd = false;
+                            }
+                        }
+                    }
+                }
+                if (queue.contains(child) && shouldAdd) {
+                    // Find which one belongs on queue
+                    Object[] nodes = queue.toArray();
+                    for (Object nodeObj : nodes) {
+                        Node searchNode = (Node)nodeObj;
+                        if (searchNode.equals(child)) {
+                            int prevNodeEval = evaluate(searchNode, goalState) + searchNode.getBookKeeping().getTotalCost();
+                            int newNodeEval = evaluate(child, goalState) + child.getBookKeeping().getTotalCost();
+                            if (newNodeEval < prevNodeEval) {
+                                queue.remove(searchNode);
+                            } else {
+                                shouldAdd = false;
+                            }
+                        }
+                    }
+                }
+                if (shouldAdd) {
                     queue.add(child);
                 }
             }

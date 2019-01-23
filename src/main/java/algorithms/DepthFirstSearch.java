@@ -26,14 +26,7 @@ public class DepthFirstSearch implements IAlgorithm {
             // Dequeue
             Node node = queue.pollLast();
             nodesPopped++;
-            if (node.getParentNode() != null) {
-                node.getBookKeeping().setTotalCost(node.getParentNode().getBookKeeping().getTotalCost() + node.getBookKeeping().getPathCost());
-            } else {
-                node.getBookKeeping().setTotalCost(node.getBookKeeping().getPathCost());
-            }
 
-            // Mark node as visited
-            node.getBookKeeping().setExpanded(true);
             visitedNodes.add(node);
             // Check if node equals goalState
             if (node.checkIfStatesAreEqual(goalState)) {
@@ -42,7 +35,8 @@ public class DepthFirstSearch implements IAlgorithm {
 
             List<Node> children = node.getSuccessors(node.getBookKeeping().getAction());
             for (Node child : children) {
-                if (!child.getBookKeeping().isExpanded() && !queue.contains(child) && !visitedNodes.contains(child)) {
+                child.getBookKeeping().setTotalCost(node.getBookKeeping().getTotalCost() + child.getBookKeeping().getPathCost());
+                if (!queue.contains(child) && !visitedNodes.contains(child)) {
                     queue.add(child);
                 }
             }

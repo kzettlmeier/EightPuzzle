@@ -8,18 +8,11 @@ import java.util.List;
 public class Node {
     private int[][] state;
     private Node parentNode;
-    private ArrayList<Node> children;
     private BookKeeping bookKeeping;
 
-    public Node(int[][] state, Node parentNode, ArrayList<Node> children, BookKeeping bookKeeping) {
+    public Node(int[][] state, Node parentNode, BookKeeping bookKeeping) {
         this.state = state;
         this.parentNode = parentNode;
-        if (children != null) {
-            this.children = children;
-        }
-        else {
-            this.children = new ArrayList<Node>();
-        }
         this.bookKeeping = bookKeeping;
     }
 
@@ -31,16 +24,8 @@ public class Node {
         return this.parentNode;
     }
 
-    public ArrayList<Node> getChildren() {
-        return this.children;
-    }
-
     public BookKeeping getBookKeeping() {
         return this.bookKeeping;
-    }
-
-    public void addChild(Node child) {
-        this.children.add(child);
     }
 
     public List<Node> getSuccessors(Action lastMove) {
@@ -53,29 +38,29 @@ public class Node {
                     // Make moves
                     // Check if can move left
                     if (!lastMove.equals(Action.LEFT) && j != 0) {
-                        BookKeeping bookKeeping = new BookKeeping(Action.LEFT, this.bookKeeping.getDepth() + 1, this.state[i][j - 1], false);
-                        Node newChild = new Node(this.swap(i, j, i, j - 1), this, null, bookKeeping);
+                        BookKeeping bookKeeping = new BookKeeping(Action.LEFT, this.bookKeeping.getDepth() + 1, this.state[i][j - 1]);
+                        Node newChild = new Node(this.swap(i, j, i, j - 1), this, bookKeeping);
                         successors.add(newChild);
                     }
 
                     // Check if can move up
                     if (!lastMove.equals(Action.UP) && i != 0) {
-                        BookKeeping bookKeeping = new BookKeeping(Action.UP, this.bookKeeping.getDepth() + 1, this.state[i - 1][j], false);
-                        Node newChild = new Node(this.swap(i, j, i - 1, j), this, null, bookKeeping);
+                        BookKeeping bookKeeping = new BookKeeping(Action.UP, this.bookKeeping.getDepth() + 1, this.state[i - 1][j]);
+                        Node newChild = new Node(this.swap(i, j, i - 1, j), this, bookKeeping);
                         successors.add(newChild);
                     }
 
                     // Check if can move right
                     if (!lastMove.equals(Action.RIGHT) && j != 2) {
-                        BookKeeping bookKeeping = new BookKeeping(Action.RIGHT, this.bookKeeping.getDepth() + 1, this.state[i][j + 1], false);
-                        Node newChild = new Node(this.swap(i, j, i, j + 1), this, null, bookKeeping);
+                        BookKeeping bookKeeping = new BookKeeping(Action.RIGHT, this.bookKeeping.getDepth() + 1, this.state[i][j + 1]);
+                        Node newChild = new Node(this.swap(i, j, i, j + 1), this, bookKeeping);
                         successors.add(newChild);
                     }
 
                     // Check if can move down
                     if (!lastMove.equals(Action.DOWN) && i != 2) {
-                        BookKeeping bookKeeping = new BookKeeping(Action.DOWN, this.bookKeeping.getDepth() + 1, this.state[i + 1][j], false);
-                        Node newChild = new Node(this.swap(i, j, i + 1, j), this, null, bookKeeping);
+                        BookKeeping bookKeeping = new BookKeeping(Action.DOWN, this.bookKeeping.getDepth() + 1, this.state[i + 1][j]);
+                        Node newChild = new Node(this.swap(i, j, i + 1, j), this, bookKeeping);
                         successors.add(newChild);
                     }
                 }

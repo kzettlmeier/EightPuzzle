@@ -49,7 +49,7 @@ public class Main {
 
         setStartingStateBasedOnDifficulty();
 
-        Node startingNode = new Node(state, null, null, new BookKeeping(Action.NONE, 0, 0, false));
+        Node startingNode = new Node(state, null, new BookKeeping(Action.NONE, 0, 0));
 
         System.out.println("Starting state:");
         startingNode.printOutStateInAGrid();

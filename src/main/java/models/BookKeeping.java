@@ -4,14 +4,12 @@ public class BookKeeping {
     private Action action;
     private int depth;
     private int pathCost;
-    private boolean expanded;
     private int totalCost;
 
-    public BookKeeping(Action action, int depth, int pathCost, boolean expanded) {
+    public BookKeeping(Action action, int depth, int pathCost) {
         this.action = action;
         this.depth = depth;
         this.pathCost = pathCost;
-        this.expanded = expanded;
         this.totalCost = 0;
     }
 
@@ -27,27 +25,7 @@ public class BookKeeping {
         return this.pathCost;
     }
 
-    public boolean isExpanded() {
-        return this.expanded;
-    }
-
     public int getTotalCost() { return this.totalCost; }
-
-    public void setAction(Action action) {
-        this.action = action;
-    }
-
-    public void setDepth(int depth) {
-        this.depth = depth;
-    }
-
-    public void setPathCost(int pathCost) {
-        this.pathCost = pathCost;
-    }
-
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
-    }
 
     public void setTotalCost(int totalCost) { this.totalCost = totalCost; }
 }
