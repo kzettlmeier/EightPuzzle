@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public class IterativeDeepeningSearch implements IAlgorithm {
+    private int nodesPopped = 0;
+    private int maxSizeOfQueue = 0;
     public Solution solve(Node startingNode, int[][] goalState, Date startingTime) throws TimeoutException {
         Solution solution = null;
         int depth = 0;
@@ -26,8 +28,6 @@ public class IterativeDeepeningSearch implements IAlgorithm {
         LinkedList<Node> queue = new LinkedList<>();
         List<Node> visitedNodes = new ArrayList<>();
         int currentDepth = 0;
-        int nodesPopped = 0;
-        int maxSizeOfQueue = 0;
 
         queue.add(startingNode);
 
