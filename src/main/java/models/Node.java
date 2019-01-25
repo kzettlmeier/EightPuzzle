@@ -28,6 +28,8 @@ public class Node {
         return this.bookKeeping;
     }
 
+    // Get the children (successors) of the node based upon the last move that was made
+    // Don't want to go back to the previous move
     public List<Node> getSuccessors(Action lastMove) {
         ArrayList<Node> successors = new ArrayList<Node>();
 
@@ -70,6 +72,7 @@ public class Node {
         return successors;
     }
 
+    // Swap two positions inside of the current state
     public int[][] swap(int originalRow, int originalColumn, int swapRow, int swapColumn) {
         int[][] newState = new int[3][3];
         for (int i = 0; i < newState.length; i++) {
@@ -83,6 +86,7 @@ public class Node {
         return newState;
     }
 
+    // Override the equals function for the node so that it checks if the states are equal
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -98,6 +102,7 @@ public class Node {
         return Arrays.deepEquals(this.state, node.state);
     }
 
+    // Used to check if two states are equal outside of node
     public boolean checkIfStatesAreEqual(int[][] state) {
         return Arrays.deepEquals(this.state, state);
     }
@@ -116,6 +121,7 @@ public class Node {
         }
     }
 
+    // Traverse through the leaf to the parent to get the path to the current node
     public List<Node> getRouteToCurrentNode() {
         List<Node> route = new ArrayList<>();
         Node current = this;

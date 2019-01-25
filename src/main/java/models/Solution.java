@@ -2,6 +2,7 @@ package models;
 
 import java.util.List;
 
+// This class will keep track of the solution and use its information to print out stats
 public class Solution {
     private List<Node> solutionList;
     private int totalCost;

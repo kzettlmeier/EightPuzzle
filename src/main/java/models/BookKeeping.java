@@ -1,5 +1,6 @@
 package models;
 
+// Keep track of book keeping information about each node
 public class BookKeeping {
     private Action action;
     private int depth;

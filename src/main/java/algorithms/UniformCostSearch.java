@@ -9,6 +9,7 @@ import java.util.concurrent.TimeoutException;
 
 public class UniformCostSearch implements IAlgorithm {
     public Solution solve(Node startingNode, int[][] goalState, Date startingTime) throws TimeoutException {
+        // Create min heap where the element to be evaluated is the total cost plus the current node cost
         PriorityQueue<Node> queue = new PriorityQueue<>(Constants.MAX_POSSIBLE_STATES, Comparator.comparingInt(x -> x.getBookKeeping().getTotalCost() + x.getBookKeeping().getPathCost()));
         List<Node> visitedNodes = new ArrayList<>();
         int nodesPopped = 0;
@@ -33,6 +34,7 @@ public class UniformCostSearch implements IAlgorithm {
 
             List<Node> children = node.getSuccessors(node.getBookKeeping().getAction());
             for (Node child : children) {
+                // Set the total cost of the successor
                 child.getBookKeeping().setTotalCost(node.getBookKeeping().getTotalCost() + child.getBookKeeping().getPathCost());
                 if (!queue.contains(child) && !visitedNodes.contains(child)) {
                     queue.add(child);

@@ -9,6 +9,7 @@ import java.util.concurrent.TimeoutException;
 
 public class AStarThreeSearch implements IAlgorithm {
     public Solution solve(Node startingNode, int[][] goalState, Date startingTime) throws TimeoutException {
+        // Create min heap where the element to be evaluated is the total cost + pattern database
         PriorityQueue<Node> queue = new PriorityQueue<>(Constants.MAX_POSSIBLE_STATES,
                 Comparator.comparingInt(x -> evaluate(x, goalState)));
         List<Node> visitedNodes = new ArrayList<>();
@@ -34,6 +35,7 @@ public class AStarThreeSearch implements IAlgorithm {
 
             List<Node> children = node.getSuccessors(node.getBookKeeping().getAction());
             for (Node child : children) {
+                // Set the total cost of the successor
                 child.getBookKeeping().setTotalCost(node.getBookKeeping().getTotalCost() + child.getBookKeeping().getPathCost());
                 boolean shouldAdd = true;
                 if (visitedNodes.contains(child)) {
@@ -53,7 +55,7 @@ public class AStarThreeSearch implements IAlgorithm {
                     }
                 }
                 if (queue.contains(child) && shouldAdd) {
-                    // Find which one belongs on queue
+                    // Check if there is any node in the queue that matches new successor, then check if the new successor has a better value than old node
                     Object[] nodes = queue.toArray();
                     for (Object nodeObj : nodes) {
                         Node searchNode = (Node)nodeObj;
@@ -68,6 +70,8 @@ public class AStarThreeSearch implements IAlgorithm {
                         }
                     }
                 }
+
+                // After duplicate checks make sure it should still be added
                 if (shouldAdd) {
                     queue.add(child);
                 }
@@ -81,9 +85,13 @@ public class AStarThreeSearch implements IAlgorithm {
     }
 
     private int evaluate(Node node, int[][] goalState) {
+        // Total cost + pattern database
         return node.getBookKeeping().getTotalCost() + patternDatabase(node.getState(), goalState);
     }
 
+    // Take half of the search space and calculate manhattan distance and then times that number by the cost of number being moved and sum those together
+    // Then do the same thing for the other half
+    // Then take the max of those two values and return it
     private int patternDatabase(int [][] currentState, int[][] goalState) {
         int firstHalfNum = 0;
         int secondHalfNum = 0;

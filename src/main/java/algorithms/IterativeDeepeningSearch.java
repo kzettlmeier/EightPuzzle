@@ -16,6 +16,7 @@ public class IterativeDeepeningSearch implements IAlgorithm {
     public Solution solve(Node startingNode, int[][] goalState, Date startingTime) throws TimeoutException {
         Solution solution = null;
         int depth = 0;
+        // Run depth first search with an increased depth until a solution is found
         while (solution == null) {
             solution = this.runDepthFirstSearchWithDepth(startingNode, goalState, startingTime, depth);
             depth++;
@@ -48,6 +49,7 @@ public class IterativeDeepeningSearch implements IAlgorithm {
             if (node.getRouteToCurrentNode().size() < maxDepth) {
                 List<Node> children = node.getSuccessors(node.getBookKeeping().getAction());
                 for (Node child : children) {
+                    // Set the total cost of the successor
                     child.getBookKeeping().setTotalCost(node.getBookKeeping().getTotalCost() + child.getBookKeeping().getPathCost());
                     if (!queue.contains(child) && !visitedNodes.contains(child)) {
                         queue.add(child);

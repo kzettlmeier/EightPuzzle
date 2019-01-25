@@ -39,6 +39,7 @@ public class Main {
     private static IAlgorithm algorithmSolver;
 
     public static void main(String[] args) {
+        // Grab arguments to determine algorithm and which difficulty for code
         pullArguments(args);
         if (!validateArguments()) {
             System.out.println("There was an issue parsing out the argument provided. Please try again.");
@@ -47,6 +48,7 @@ public class Main {
         System.out.println();
         System.out.println("Running Eight Puzzle on " + difficulty + " with algorithm " + algorithm + "!");
 
+        // Set which starting state to use
         setStartingStateBasedOnDifficulty();
 
         Node startingNode = new Node(state, null, new BookKeeping(Action.NONE, 0, 0));
@@ -55,10 +57,16 @@ public class Main {
         startingNode.printOutStateInAGrid();
         System.out.println("---------------------");
 
+        // Set the algorithm to be used
         setAlgorithm();
         try {
+            // Set the starting time to be used to keep track of max run time
             Date startingTime = new Date();
+
+            // Solve the 8-puzzle
             Solution solution = algorithmSolver.solve(startingNode, goalState, startingTime);
+
+            // Print out solution along with stats
             System.out.println("Found a solution:");
             printOutList(solution.getSolutionList());
             long timeToSolveInMs = (new Date()).getTime() - startingTime.getTime();
@@ -70,11 +78,13 @@ public class Main {
             System.out.println("Time: " + solution.getNumberOfNodesPopped());
             System.out.println("Space: " + solution.getTotalSpaceAtMax());
         } catch (TimeoutException ex) {
+            // Algorithm took longer than max alotted time
             System.out.println("Algorithm Exception: " + ex.getMessage());
             System.out.println("Algorithm took longer than " + (Constants.MAX_TIME_TO_SOLVE / 1000) / 60 + " minutes.");
         }
     }
 
+    // Print out current path in a pretty way
     private static void printOutList(List<Node> list) {
         if (list != null) {
             int totalCost = 0;
@@ -88,6 +98,7 @@ public class Main {
         }
     }
 
+    // Set the implementation of the solver
     private static void setAlgorithm() {
         if (algorithm.equals("breadth-first")) {
             algorithmSolver = new BreadthFirstSearch();
@@ -115,6 +126,7 @@ public class Main {
         }
     }
 
+    // Set the starting state based on difficulty
     private static void setStartingStateBasedOnDifficulty() {
         if ("easy".equals(difficulty)) {
             state = startingStateEasy;
@@ -127,6 +139,7 @@ public class Main {
         }
     }
 
+    // Grab the Java command line arguments
     private static void pullArguments(String[] args) {
         if (args.length != 2) {
             System.out.println("Must provide arguments for difficulty and algorithm!");
@@ -140,6 +153,7 @@ public class Main {
         algorithm = args[1].toLowerCase();
     }
 
+    // Make sure arguments are valid
     private static boolean validateArguments() {
         if (!difficulty.equals("easy") && !difficulty.equals("medium") && !difficulty.equals("hard")) {
             return false;

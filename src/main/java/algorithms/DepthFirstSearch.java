@@ -35,6 +35,7 @@ public class DepthFirstSearch implements IAlgorithm {
 
             List<Node> children = node.getSuccessors(node.getBookKeeping().getAction());
             for (Node child : children) {
+                // Set the total cost of the successor
                 child.getBookKeeping().setTotalCost(node.getBookKeeping().getTotalCost() + child.getBookKeeping().getPathCost());
                 if (!queue.contains(child) && !visitedNodes.contains(child)) {
                     queue.add(child);

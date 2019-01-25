@@ -9,6 +9,7 @@ import java.util.concurrent.TimeoutException;
 
 public class BestFirstSearch implements IAlgorithm {
     public Solution solve(Node startingNode, int[][] goalState, Date startingTime) throws TimeoutException {
+        // Create min heap where the element to be evaluated is the number of tiles not in their correct position
         PriorityQueue<Node> queue = new PriorityQueue<>(Constants.MAX_POSSIBLE_STATES,
                 Comparator.comparingInt(x -> numberOfTilesNotInCorrectPosition(x.getState(), goalState)));
         List<Node> visitedNodes = new ArrayList<>();
@@ -34,6 +35,7 @@ public class BestFirstSearch implements IAlgorithm {
 
             List<Node> children = node.getSuccessors(node.getBookKeeping().getAction());
             for (Node child : children) {
+                // Set the total cost of the successor
                 child.getBookKeeping().setTotalCost(node.getBookKeeping().getTotalCost() + child.getBookKeeping().getPathCost());
                 boolean shouldAdd = true;
                 if (visitedNodes.contains(child)) {
@@ -53,7 +55,7 @@ public class BestFirstSearch implements IAlgorithm {
                     }
                 }
                 if (queue.contains(child) && shouldAdd) {
-                    // Find which one belongs on queue
+                    // Check if there is any node in the queue that matches new successor, then check if the new successor has a better value than old node
                     Object[] nodes = queue.toArray();
                     for (Object nodeObj : nodes) {
                         Node searchNode = (Node)nodeObj;
@@ -68,6 +70,8 @@ public class BestFirstSearch implements IAlgorithm {
                         }
                     }
                 }
+
+                // After duplicate checks make sure it should still be added
                 if (shouldAdd) {
                     queue.add(child);
                 }
@@ -80,6 +84,7 @@ public class BestFirstSearch implements IAlgorithm {
         return null;
     }
 
+    // Calculate the number of tiles that are not in the correct position
     private int numberOfTilesNotInCorrectPosition(int [][] currentState, int[][] goalState) {
         int num = 0;
         for (int i = 0; i < currentState.length; i++) {
